@@ -1,0 +1,30 @@
+{
+  "name": "job_2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "dev": "nodemon --watch ./src/server --exec 'babel-node ./src/server/app.js'"
+  },
+  "dependencies": {
+    "co": "^4.6.0",
+    "koa": "^2.11.0",
+    "koa-router": "^8.0.8",
+    "koa-static": "^5.0.0",
+    "koa-swig": "^2.2.1",
+    "log4js": "^6.1.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "node-fetch": "^2.6.0",
+    "nodemon": "^2.0.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
