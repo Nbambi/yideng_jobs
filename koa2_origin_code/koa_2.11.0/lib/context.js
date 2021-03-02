@@ -73,10 +73,14 @@ const proto = module.exports = {
   assert: httpAssert,
 
   /**
+   * 抛出异常的方法
+   * 
    * Throw an error with `status` (default 500) and
    * `msg`. Note that these are user-level
    * errors, and the message may be exposed to the client.
    *
+   *  下面是一些案例：
+   * 
    *    this.throw(403)
    *    this.throw(400, 'name required')
    *    this.throw('something exploded')
@@ -99,7 +103,7 @@ const proto = module.exports = {
 
   /**
    * Default error handling.
-   *
+   *  默认的错误处理程序
    * @param {Error} err
    * @api private
    */
@@ -150,8 +154,11 @@ const proto = module.exports = {
     if ('number' != typeof err.status || !statuses[err.status]) err.status = 500;
 
     // respond
+    // 默认根据状态码返回 HTTP 的状态描述
+    // 如果异常对象的 expose 属性为 true，将会把异常信息抛给客户端
     const code = statuses[err.status];
-    const msg = err.expose ? err.message : code;
+    const msg = err.expose ? err.message : code; 
+
     this.status = err.status;
     this.length = Buffer.byteLength(msg);
     res.end(msg);
