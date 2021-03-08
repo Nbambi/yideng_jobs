@@ -3,9 +3,9 @@ import fetch from 'node-fetch';
 class SafeRequest {
     constructor() { }
     async fetch(url) {
-        // 规范格式
+        //规范数据格式
         let result = {
-            code: 0,
+            code: 0, //0标识一下成功
             msg: "",
             data: null
         }
@@ -20,9 +20,9 @@ class SafeRequest {
                     resolve(result);
                 })
                 .catch(error => {
-                    result.code = -1;
+                    result.code = -1; //-1标识失败
                     result.msg = error.message;
-                    reject(error);
+                    reject(result);
                 });
         });
     }

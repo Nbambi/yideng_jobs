@@ -8,16 +8,16 @@ import co from 'co'; // koa-swig 需要引入
 
 import errorHandle from './middlewares/errorHandle';  // 错误中间件
 import config from './config/config'; // 配置文件
-import routerController from './controllers/router';
+import routerController from './controllers/router'; // 路由配置总文件
 
 const app = new Koa();
 const router = new Router();
 
-// koa-swig 注册一个 render 方法到 app ; koa本身是没有这个方法的
+// 在 app.context 上注册一个 render 方法(调用了模板引擎 koa-swig)  ; koa本身是没有这个方法的
 app.context.render = co.wrap(swig({
     root: config.viewDir,
     autoescape: true,
-    cache: false,
+    cache: false, // 或者 'memory'，比如线上环境可以设置为要缓存，此处也可以改成可配置的
     ext: 'html'
 }));
 
@@ -35,10 +35,12 @@ const logger = log4js.getLogger('global');
 errorHandle.init(app, logger);
 
 // 静态资源管理
-app.use(assets( config.assetsDir ));
+app.use(assets(config.assetsDir));
 
 // 使用路由中间件
-app.use(router.routes()).use(router.allowedMethods());
+app
+    .use(router.routes())
+    .use(router.allowedMethods());
 
 app.listen(config.port, () => {
     console.log('server is running, port 3000');

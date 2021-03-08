@@ -122,6 +122,7 @@ const proto = module.exports = {
     }
 
     // delegate
+    // 触发全局 error 事件，app（Application） 继承自 Emitter
     this.app.emit('error', err, this);
 
     // nothing we can do here other

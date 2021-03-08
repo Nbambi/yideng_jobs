@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "dev": "nodemon --watch ./src/server --exec 'babel-node ./src/server/app.js'"
+    "dev": "nodemon --watch ./src/server --exec 'babel-node ./src/server/app.js'" 
   },
   "dependencies": {
     "co": "^4.6.0",

@@ -17,13 +17,14 @@ server端代码： /basic（server端只有查看全部的接口可用）
 - 抽取配置文件  
 
 ### 搭建 MVC 架构
-- 书写 controller：匹配及处理路由  
-- 书写 model 层：书写各种方法，利用 node-fetch 获取后端接口返回的数据  
+- 书写 controller：匹配及处理路由，返回页面/数据
+- 书写 model 层：数据调用层，利用 node-fetch 获取后端接口返回的数据  
 - 优化：SafeRequest 抽象，规范所有的 fetch 格式  
 - 书写 View：使用 koa-swig 模板  
 
 ### 函数式编程 + 节流
-- 直播 1:55:00 左右  
+- 模仿 underscore、lodash 编写函数式编程工具类 utils/util.js
+- 在 util.js 中写一个节流函数
 
 ## 二、知识点罗列
 ### ES6 模块化支持
@@ -60,12 +61,13 @@ ES6语法为import，为了支持ES6的import写法，需要引入babel进行编
 > npm install koa-swig
 > npm install co
 
-- 使用：使用 swig 注册一个 render 方法在 app
+- 使用：在 app.context 上使用注册一个 render 方法（调用 swig ）
 ```
 import swig from 'koa-swig'; // 模板引擎
 import co from 'co'; // koa-swig 需要引入
 
-// koa-swig 注册一个 render 方法到 app ; koa本身是没有这个方法的
+// 在 app.context 上使用注册一个 render 方法（调用 swig ）; koa本身是没有这个方法的 ; 这样就可以通过 ctx.render 进行调用了
+// 为什么可以通过这样操作呢，跟 Koa 的底层原理有关，参见 Koa 源码 application createContext()方法
 app.context.render = co.wrap(swig({
     root: config.viewDir,
     autoescape: true,
@@ -75,8 +77,11 @@ app.context.render = co.wrap(swig({
 ```
 
 
-### 节流（考点）
-- 节流：每隔一段时间只会执行一次，即使是多次触发
+### 节流函数（考点）
+- 节流：
+    - 每隔一段时间只会执行一次，即使是多次触发
+    - 第一次触发会立即执行
+    - 如果在间隔时间内触发 会在间隔末尾再执行一次
 
 
 

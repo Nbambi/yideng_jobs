@@ -66,6 +66,7 @@ module.exports = class Application extends Emitter {
 
   /**
    * 创建 Http 服务
+   *  服务开启的入口 可以从这里看作为整体流程梳理的开头
    * 
    * Shorthand for:
    *
@@ -174,13 +175,14 @@ module.exports = class Application extends Emitter {
   handleRequest(ctx, fnMiddleware) {
     const res = ctx.res;
     res.statusCode = 404;
-    // 错误处理函数
+    // 错误处理函数 & context.js onerror(){}
     const onerror = err => ctx.onerror(err);
     // 响应回调函数 respond
     const handleResponse = () => respond(ctx);
     // 执行清理操作
     onFinished(res, onerror);
     // 中间件处理 -> 调用 respond 函数响应客户端 -> 错误处理函数兜底进行错误处理
+    // 中间件处理会返回 Promise，如果 Pormise 状态为 Rejected，则会进入 catch 语句块中触发错误处理函数
     return fnMiddleware(ctx).then(handleResponse).catch(onerror);
   }
 
