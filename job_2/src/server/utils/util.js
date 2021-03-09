@@ -4,10 +4,30 @@
 
 //工具库外层基本都是用一个闭包包裹起来达到函数级别的作用域隔离，这样函数内的变量不会对外造成污染
 (function () {
+    //对环境进行判断，这部分的写法也值得借鉴
+    var root = (
+        (
+            (
+                ((typeof (self)) == ("object")) // self表示window窗口自身，这是浏览器环境下的全局命名空间
+                &&
+                ((self.self) === (self)) // 如果存在self，判断self是否是自身引用，即window这一对象
+            )
+            &&
+            (self) // 如果以上都满足，说明全局对象是window，并返回window作为root，这里self即window
+        )
+        ||
+        (
+            (
+                ((typeof (global)) == ("object")) // global表示node环境下全局的命名空间
+                &&
+                ((global.global) === (global)) // 如果存在gloabl，判断global是否是自身引用
+            )
+            &&
+            (global) // 如果以上都满足，说明全局对象是global，并返回global作为root
+        )
+    ) || (this); // 如果以上都不满足，直接返回this，这里应该处理既不是window这一浏览器环境，也不是global这一node环境的
 
-    // 对环境进行判断，这部分的写法也值得借鉴
-    // FIXME
-
+    
     //初始化 _ 对象，暴露出来的对象很简单 _，架构思想：基于可插拔的架构
     var _ = function (obj) {
         if (obj instanceof _) return obj;
