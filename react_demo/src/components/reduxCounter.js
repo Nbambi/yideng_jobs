@@ -11,8 +11,8 @@ import { fetchData } from '../actions/dataAction';
 /**
  * 建立 [组件props & store的state] 的映射
  * 
- * @param {*} state redux.store.state
- * @returns ReactComponent.props
+ * @param {*} state redux.store.state --> redux的状态对象
+ * @returns ReactComponent.props --> react组件的props
  */
 function mapStateToProps(state) {
     // 格式：ReactComponent.props.count: store.state.count
@@ -33,7 +33,7 @@ function mapStateToProps(state) {
 }
 
 /**
- * 建立 [组件props & store.dispatch方法] 的映射，可以是一个函数，也可以是一个对象
+ * 建立 [组件函数 & store.dispatch(actionCreator)] 的映射，可以是一个函数，也可以是一个对象
  */
 // 1. 对象写法
 // const mapDispatchToProps = {
@@ -44,6 +44,7 @@ function mapStateToProps(state) {
 // 2. 函数写法
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
+        //ReactComponent fun: dispatch(actionCreator)
         add: () => dispatch(add()),
         reduce: () => dispatch(reduce()),
         fetchData: () => dispatch(fetchData())
@@ -62,7 +63,7 @@ class ReduxCounter extends React.Component {
         // 1. 没有 mapDispatchToProps 映射时候：
         // this.props.dispatch(add()); //dispatch方法随着connect一同被返回到props里，所以可以直接取到这个方法进行action派发
 
-        // 2. 建立 mapDispatchToProps 映射后：
+        // 2. 建立 mapDispatchToProps 映射后：这是因为组件中的 add 函数被映射到了 dispatch(add())
         this.props.add();
     }
 

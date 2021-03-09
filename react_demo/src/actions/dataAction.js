@@ -27,6 +27,7 @@ export const fetch_fail = (error, data) => {
  * 中间件与异步操作
  *  原理：在redux的dispatch方法里加入异步操作 -> 异步操作 + action的派发
  *  录播里说是增强了action的能力，个人感觉这个说法其实不是很准确，action只能是对象，所以说是在dispatch里多做了一些事比较合理
+ *  不过代码确实是使用 dispatch 调用了这个函数，又在这个函数中再次使用 dispatch(action) 派送 action
  */
 export function fetchData() {
     return (dispatch, getState) => {
