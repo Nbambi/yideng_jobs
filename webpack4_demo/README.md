@@ -147,8 +147,8 @@ module.exports = merge( baseConfig, debConfig );
 ```
 
 
-### 十一、优化 之 第三方库的单独打包
-以jquery为例，先安装一下
+### 十一、优化 之 第三方库/公用模块的单独打包
+对于一些公用的模块或者是第三方工具库之类的模块，可以将其抽取出来单独打包。以jquery为例，先安装一下
 > npm install -D jquery
 
 1. 入口配置
@@ -161,7 +161,6 @@ module.exports = merge( baseConfig, debConfig );
     }
     plugins:[
         new webpack.ProvidePlugin({
-            // identifier: path.resolve(path.join(__dirname, 'src/module1'))
             $: "jquery",
             jQuery: "jquery"
         })
@@ -170,7 +169,7 @@ module.exports = merge( baseConfig, debConfig );
 ```
 配置好之后无需在文件中再次引入jquery，就可以用通过 $ 或者 jQuery 进行使用，且打包后的文件中会出现一个单独的 jquery 文件
 
-2. 动态加载
+2. 动态加载模块
 配合 @babel/plugin-syntax-dynamic-import 这个 plugin 实现动态加载。使用时在代码中动态引入
 
 - 首先先安装plugin
@@ -188,8 +187,9 @@ module.exports = merge( baseConfig, debConfig );
 
 - 在要使用的地方如下，即可
 ```
-import(/*webpackChunkName: 'jquery'*/ 'jquery').then(({ default: $ }) => {
-    console.log('第三方库打包优化方法三 -> 动态加载');
+// magic comments(魔术注释)，是 webpack 提供的一种特性，可以使用它为动态加载的 chunk 指定名称
+import( /*webpackChunkName: 'jquery'*/ 'jquery').then(({ default: $ }) => {
+    console.log('第三方库打包优化方法三 -> 动态加载的jquery模块');
 });
 ```
 
@@ -245,3 +245,14 @@ const yargsArgv = require('yargs').argv;
 // 拿到定义好的 NODE_ENV 参数，进行模式的判断。可以拿着这个参数去进行配置的区分。
 const modeFlag = yargsArgv.NODE_ENV === 'development'? true:false; 
 ```
+
+
+
+- 下面是webpack专题课中自己补充的一些内容，可能会有部分内容跟前面重复
+
+### 十五、CSS文件的单独抽取和 Treeshaking
+> npm i -D mini-css-extract-plugin // CSS 文件单独打包
+使用插件后打包后发现js文件中的css代码抽取出去了，dist中出现了单独的css文件
+
+> npm i -D purgecss-webpack-plugin // CSS Treeshaking
+在样式文件中写一个没有被用到的 class，使用插件后打包，打包后的css文件中不会包含未使用到的class

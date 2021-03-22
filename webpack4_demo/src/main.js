@@ -31,6 +31,7 @@ console.log(chunk([1, 2, 3], 2));
 
 import $ from 'jquery'; //不优化第三方库时需要在要使用的文件中这样引入
 
-// import(/*webpackChunkName: 'jquery'*/ 'jquery').then(({ default: $ }) => {
+// 使用 Magic Comments 魔术注解 , 在动态引入模块的时候给 chunk 命名
+// import(/* webpackChunkName: 'jquery' */ 'jquery').then(({ default: $ }) => {
 //     console.log('第三方库打包优化方法三 -> 动态加载');
 // });

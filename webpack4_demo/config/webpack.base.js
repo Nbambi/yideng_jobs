@@ -1,11 +1,15 @@
 // 共用配置
 
 const path = require('path'); //路径处理
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const glob = require('glob'); //可以用来找文件
 const Webpack = require('webpack');
-const argv = require('yargs').argv;
+const HtmlWebpackPlugin = require('html-webpack-plugin'); //自动生成 html 页面的插件
+const { CleanWebpackPlugin } = require('clean-webpack-plugin'); //删除 dist 文件的插件
+const argv = require('yargs').argv; //参数传递，例如环境参数
 console.log('NODE_ENV:', argv.NODE_ENV);
+
+const MiniCssExtractPlugin = require('mini-css-extract-plugin'); //抽取js中css代码的插件
+const PurgeCSSPlugin = require('purgecss-webpack-plugin'); //css treeshaking 插件
 
 // webpack基于Node开发，遵循CommonJS规范
 module.exports = {
@@ -84,9 +88,12 @@ module.exports = {
                 // use: ["style-loader", "css-loader", "less-loader"],
                 use: [
                     // 顺序从下到上
+                    // {
+                    //     // 通过style标签将css注入到html页面
+                    //     loader: "style-loader", //create style nodes from JS strings,不配置这个无法在html中生效
+                    // },
                     {
-                        // 通过style标签将css注入到html页面
-                        loader: "style-loader", //create style nodes from JS strings,不配置这个无法在html中生效
+                        loader: MiniCssExtractPlugin.loader
                     },
                     {
                         loader: "css-loader", //translates CSS into CommmonJS
@@ -141,9 +148,19 @@ module.exports = {
             //template:指定生成文件的文件模板，可以在里面添加 html 元素，生成的打包后文件会按照这个模板生成
             template: path.join(__dirname, '../src/pages/template.html'),
         }),
+        
         // 优化第三方库打包方法1
         // new Webpack.ProvidePlugin({
         //     $: 'jquery'
-        // })
+        // }),
+
+        // css 文件抽取单独打包
+        new MiniCssExtractPlugin({
+            filename: "[name].css",
+        }),
+        // css TreeShaking
+        new PurgeCSSPlugin({
+            paths: glob.sync(path.join(__dirname, '../dist/*.html'))
+        })
     ]
 }
