@@ -19,3 +19,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# 生成的打包统计数据文件 
+# https://www.webpackjs.com/api/stats/
+/stats.json

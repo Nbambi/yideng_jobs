@@ -1,0 +1,109 @@
+#!/usr/bin/env node
+const figlet = require('figlet'); //输出好看的字体
+const Printer = require('@darkobits/lolcatjs'); //输出彩色的字体
+const { program } = require('commander'); //node命令行解决方案，帮助命令开发
+const _version = require('../package.json').version;
+const chalk = require('chalk'); //命令行输出文字改变颜色的东东
+const inquirer = require('inquirer'); //一组常用的交互式命令行用户界面
+const shell = require('shelljs'); //执行一些linux命令
+const ora = require('ora'); //loading效果
+const downloadGitRepo = require('download-git-repo'); //从git上下载项目
+
+const helloWord = figlet.textSync('Welcome my-cli Demo!!');
+const transformed = Printer.default.fromString(`${helloWord} ${_version}`);
+console.log(transformed); //输出欢迎文字
+
+program.version(`${_version}`, '-v, --version', 'show the version number.');
+
+// 定义一个命令-handler字典
+const dictionary = {
+    create(env) {
+        // 交互式的
+        inquirer
+            .prompt([
+                /* Pass your questions in here */
+
+                {
+                    type: 'text', //字符类型
+                    name: 'dirname', //必须的选项
+                    message: '请输入要创建的项目名称'
+                },
+                {
+                    type: 'list', //可选
+                    name: 'jskind',
+                    message: '请选择开发语言',
+                    choices: ['TS', 'ES6']
+                }
+            ])
+            .then(answers => {
+                // Use user feedback for... whatever!!
+
+                console.log(answers.dirname); //拿到的用户填写的项目名称
+
+                const _pwd = shell.pwd().stdout; //当前所处路径
+                const projectPath = `${_pwd}/${answers.dirname}`;
+                shell.rm('-rf', projectPath); //删除同名文件夹
+                shell.mkdir(projectPath); //创建文件夹
+
+                //loading效果 旋转器
+                const spinner = ora("downloading templete ...");
+                spinner.start();
+
+                //下载模板项目
+                const templete = 'direct:';  //FIXME 冒号后面是 github 的 HTTPS 地址
+                downloadGitRepo(templete, projectPath, { clone: true }, function (err) {
+                    spinner.stop();
+                    if (err) {
+                        console.log(chalk.red("下载失败！"));
+                    } else {
+                        // 下载成功，将项目package.json中的项目名称修改成用户填写的项目名称
+                        shell.sed("-i", "vue-element-admin", answers.dirname, projectPath + '/package.json'); //改字命令
+                    }
+                });
+            })
+            .catch(error => {
+                if (error.isTtyError) {
+                    // Prompt couldn't be rendered in the current environment
+
+
+                } else {
+                    // Something else went wrong
+
+
+                }
+            });
+    },
+    clean(env) {
+        inquirer
+            .prompt([
+                {
+                    type: 'text', //字符类型
+                    name: 'dirname', //必须的选项
+                    message: '请输入要清理的项目名称'
+                }
+            ])
+            .then(answers => {
+                const _pwd = shell.pwd().stdout; //当前所处路径
+                const projectPath = `${_pwd}/${answers.dirname}`;
+                shell.rm('-rf', projectPath); //删除同名文件夹
+            })
+            .catch(error => { });
+    }
+}
+
+// 接收命令及参数，根据命令匹配 handler 或发出友好提示
+program
+    .name("my-command")
+    .usage("[cmd] <options>")
+    .arguments("<cmd> [env]")
+    .action(function (cmd, env) {
+        // cmd 命令；env 传参
+        const hander = dictionary[cmd];
+        if (hander) {
+            hander(env);
+        } else {
+            console.log(`${chalk.blue(`> [${cmd}] 命令`)} ${chalk.red('暂未支持！！')}`);
+        }
+    });
+
+program.parse(process.argv); //处理参数
