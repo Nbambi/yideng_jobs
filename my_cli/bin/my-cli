@@ -51,15 +51,15 @@ const dictionary = {
 
                 //下载模板项目
                 const templete = 'direct:';  //FIXME 冒号后面是 github 的 HTTPS 地址
-                downloadGitRepo(templete, projectPath, { clone: true }, function (err) {
-                    spinner.stop();
-                    if (err) {
-                        console.log(chalk.red("下载失败！"));
-                    } else {
-                        // 下载成功，将项目package.json中的项目名称修改成用户填写的项目名称
-                        shell.sed("-i", "vue-element-admin", answers.dirname, projectPath + '/package.json'); //改字命令
-                    }
-                });
+                // downloadGitRepo(templete, projectPath, { clone: true }, function (err) {
+                //     spinner.stop();
+                //     if (err) {
+                //         console.log(chalk.red("下载失败！"));
+                //     } else {
+                //         // 下载成功，将项目package.json中的项目名称修改成用户填写的项目名称
+                //         shell.sed("-i", "vue-element-admin", answers.dirname, projectPath + '/package.json'); //改字命令
+                //     }
+                // });
             })
             .catch(error => {
                 if (error.isTtyError) {
