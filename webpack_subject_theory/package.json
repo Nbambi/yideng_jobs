@@ -1,0 +1,17 @@
+{
+  "name": "webpack_subject_theory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "books-list.bundle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": "rm ./dist/main.js ",
+    "build": "node 2.miniwebpack.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ejs": "^3.1.6"
+  }
+}

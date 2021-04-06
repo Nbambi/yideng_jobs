@@ -19,7 +19,7 @@ const htmlPlugins = [];
 const entrys = {};
 
 entryFiles.forEach(url => {
-    // 写正则 ->    /.../ 两边/，然后中间写规则，$表示结尾
+    // 写正则 ->    /.../ 两边/，然后中间写规则，$表示结尾，[a-zA-Z]表示匹配大小写英文字母
     if (/([a-zA-Z]+-[a-zA-Z]+)\.entry\.js$/.test(url)) {
         const entryKey = RegExp.$1;
         console.log('entryKey', entryKey);
