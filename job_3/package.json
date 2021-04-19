@@ -1,8 +1,7 @@
 {
-  "name": "job_2",
+  "name": "job_3",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "directories": {
     "test": "tests"
   },
