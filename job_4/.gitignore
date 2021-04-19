@@ -1,0 +1,7 @@
+node_modules
+src/server/logs
+package-lock.json
+dist
+
+# MACOS
+.DS_Store

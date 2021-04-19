@@ -1,0 +1,20 @@
+{% extends '../layouts/index.html' %}
+
+{% block title %}图书列表页面{% endblock %}
+
+{% block head %}
+<!-- injectcss -->
+{% endblock %}
+
+{% block content %}
+<h1>图书展示列表</h1>
+<ul>
+    {%for item in data.data%}
+    <li>{{item.book_name}}</li>
+    {%endfor%}
+</ul>
+{% endblock %}
+
+{% block scripts %}
+<!-- injectjs -->
+{% endblock %}
