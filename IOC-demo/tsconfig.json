@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true, //es模块化语法
+        "experimentalDecorators": true,
+        "noImplicitAny": true, //不允许是any
+        "noImplicitThis": true,
+        "baseUrl": "./",
+        "paths": {
+            "@interfaces/*": [
+                "interfaces/*"
+            ]
+        }
+    }
+}
