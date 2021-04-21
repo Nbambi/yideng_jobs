@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用CSS绘制特殊图形</title>
+    <style type="text/css">
+        .parent-dot {
+            width: 0px !important;
+            height: 0px !important;
+        }
+
+        /* 页面上如果将 .init 的宽高置为 0 会发现4个边框各自呈三角形对在一起 */
+        .init {
+            width: 100px;
+            height: 100px;
+            background: yellowgreen;
+            border: 30px solid;
+            border-left-color: red;
+            border-right-color: royalblue;
+            border-bottom-color: teal;
+            border-top-color: violet;
+            margin: 10px;
+        }
+
+        /* 基与上面的发现，宽高=0，背景色调为透明，去掉三个边就可以做出一个三角形来 */
+        .triangle-isosceles {
+            width: 0;
+            height: 0;
+            background: transparent;
+            border: 30px solid;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            border-top-color: violet;
+            margin: 10px;
+        }
+
+        /* 直角三角形：宽高=0，背景色调为透明，去掉两个相邻的边框会发现剩下两个边框都是直角三角形，设置其中一个背景色为透明即可 */
+        .triangle-right-step1 {
+            width: 100px;
+            height: 100px;
+            background: yellowgreen;
+            border: 30px solid;
+            border-left-color: red;
+            border-left: 0;
+            border-bottom-color: teal;
+            border-bottom: 0;
+            border-right-color: royalblue;
+            border-top-color: violet;
+            margin: 10px;
+        }
+
+        .triangle-right {
+            width: 0;
+            height: 0;
+            background: transparent;
+            border: 30px solid;
+            border-left-color: red;
+            border-left: 0;
+            border-bottom-color: teal;
+            border-bottom: 0;
+            border-top-color: transparent;
+            border-right-color: royalblue;
+            margin: 10px;
+        }
+
+        /* 梯形：有了上面的实践，这个就非常简单了，高度=0；将三个表框置为透明即可 */
+        .trapezoid {
+            width: 100px;
+            height: 0;
+            background: transparent;
+            border: 30px solid;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            border-top-color: transparent;
+            border-bottom-color: teal;
+            margin: 10px;
+        }
+
+        /* 圆：利用 border-radius，宽高要一样高，圆角也是有四个方向的 */
+        .circle {
+            width: 100px;
+            height: 100px;
+            background: yellowgreen;
+            border-radius: 50%;
+            /* 圆角是有四个方向的，可以分别进行设置，如下： */
+            /* border-top-left-radius: 50%; */
+            margin: 10px;
+        }
+
+        /* 椭圆 */
+        .ellipse {
+            width: 150px;
+            height: 80px;
+            background: yellowgreen;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 设置一个正方形 给定边框 -->
+    <div class="init"></div>
+    <div class="init parent-dot"></div>
+
+    <!-- 等腰三角形 -->
+    <div class="triangle-isosceles"></div>
+
+    <!-- 直角三角形 -->
+    <div class="triangle-right-step1"></div>
+    <div class="triangle-right-step1 parent-dot"></div>
+    <div class="triangle-right"></div>
+
+    <!-- 梯形 -->
+    <div class="trapezoid"></div>
+
+    <!-- 圆 -->
+    <div class="circle"></div>
+
+    <!-- 椭圆 -->
+    <div class="ellipse"></div>
+</body>
+
+</html>

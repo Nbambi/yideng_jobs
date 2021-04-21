@@ -1,0 +1,120 @@
+<!-- 
+    前置知识
+        3D变形函数 -> 利用transform属性，使元素旋转、平移、缩放、倾斜
+            rotate rotateX rotateY rotateZ 【旋转】
+            translate translateX translateY translateZ 【平移】
+            scale scaleX scaleY scaleZ 【缩放】
+            skew skewX skewY 【倾斜】
+        
+    实现思路：
+        1. 设置舞台，设置容器
+        2. 设置容器内容 6个面，position定位，通过transform属性对各个面进行平移旋转等 构成一个立方体（宽160px）
+        3. 设置容器为3D透视，设置舞台视距和观察者距离，打开浏览器，调整视角就可以看到一个静态的立方体了
+        4. 设置动画
+ -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> CSS 3D 魔方 </title>
+    <style type="text/css">
+        #view {
+            margin: 200px;
+            /* 设置视距，眼睛距离舞台的距离 */
+            perspective: 600px;
+            /* 设置观察者位置，默认中心点，参数设置 positionX positonY  */
+            perspective-origin: 25% 250px;
+        }
+
+        #box {
+            /* 注意设置 */
+            position: relative;
+            width: 160px;
+            height: 160px;
+            /* 设置3D视图声明，不然会在2D视图上 */
+            transform-style: preserve-3d;
+            /* 设置动画 */
+            animation: example 20s linear infinite;
+        }
+
+        /* 设置动画 */
+        @keyframes example {
+            0% {
+                transform: rotateY(0deg) rotateX(0deg);
+            }
+
+            25% {
+                transform: rotateY(90deg) rotateX(90deg);
+            }
+
+            50% {
+                transform: rotateY(180deg) rotateX(180deg);
+            }
+
+            75% {
+                transform: rotateY(270deg) rotateX(270deg);
+            }
+
+            100% {
+                transform: rotateY(360deg) rotateX(360deg);
+            }
+        }
+
+        #box div {
+            /* 注意设置 */
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border: 1px solid #000;
+            background: wheat;
+            text-align: center;
+            font-size: 130px;
+        }
+
+        .front {
+            transform: translateZ(80px);
+        }
+
+        .back {
+            transform: translateZ(-80px) rotateY(180deg);
+        }
+
+        .top {
+            transform: translateY(-80px) rotateX(90deg);
+        }
+
+        .bottom {
+            transform: translateY(80px) rotateX(-90deg);
+        }
+
+        .left {
+            transform: translateX(-80px) rotateY(-90deg);
+        }
+
+        .right {
+            transform: translateX(80px) rotateY(90deg);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 舞台 -->
+    <div id="view">
+        <!-- 容器 -->
+        <div id="box">
+            <div class="front">前</div>
+            <div class="back">后</div>
+            <div class="top">上</div>
+            <div class="bottom">下</div>
+            <div class="left">左</div>
+            <div class="right">右</div>
+        </div>
+    </div>
+</body>
+
+</html>
