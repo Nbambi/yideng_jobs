@@ -15,8 +15,8 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 {
-                    from: path.join(__dirname, '../src/web/views/layouts'),
-                    to: "../views/layouts", //to的路径基于output.path
+                    from: path.join(__dirname, '../src/web/views/layouts/index.prod.html'),
+                    to: "../views/layouts/index.html", //to的路径基于output.path
                     transform(content) {
                         return minify(
                             content.toString(),
@@ -25,8 +25,12 @@ module.exports = {
                     }
                 },
                 {
-                    from: path.join(__dirname, '../src/web/components'),
+                    from: path.join(__dirname, '../src/web/components/**/*.html'),
                     to: "../components",
+                    transformPath(targetPath) {
+                        // 修正一下路径问题，上面匹配 ** 后会产生多余的目录结构
+                        return targetPath.replace("src/web/components", "");
+                    },
                     transform(content) {
                         return minify(content.toString(), { collapseWhitespace: true });
                     }

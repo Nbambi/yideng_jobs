@@ -1,5 +1,5 @@
 ## 一、本项目内容
-* 基于专题三作业代码完成专题四作业要求
+* 基于专题三作业代码完成专题四作业要求；专题五CSS实践
 * 内容：利用 X-TAG 完成刷页SSR、切页SPA（VueSSR 原理简易版）
 
 
@@ -233,3 +233,42 @@ app.context.render = co.wrap(swig({
 {% endblock %}
 
 ```
+
+
+### 四、专题五实践
+1. 把 postcss 加进项目里
+
+> npm install -D postcss-loader
+
+> npm install -D postcss-preset-env
+
+创建 postcss.config.js 配置文件并配置；修改 webpack 配置
+
+```
+// webpack.config.js
+...
+module: {
+    rules: [
+        {
+            test: /\.js$/,
+            use: ['babel-loader']
+        },
+        {
+            test: /\.css$/,
+            use: [
+                MiniCssExtractPlugin.loader,
+                {
+                    loader: 'css-loader',
+                    options: {
+                        importLoaders: 1
+                    }
+                },
+                'postcss-loader'
+            ]
+        },
+    ]
+},
+...
+```
+
+2. CopyPlugin 修正：因为js、css文件会被单独打包到dist，所以其实主要 copy html 就可以；另外修正一下目录结构，直接至 components 下即可。

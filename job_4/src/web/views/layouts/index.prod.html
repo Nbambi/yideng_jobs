@@ -1,0 +1,25 @@
+<!-- 模板文件 -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %} {% endblock %}</title>
+        {% block head %} {% endblock %}
+    </head>
+    <body>
+        <p>首页</p>
+        {% include '../../components/banner/banner.html' %}
+        
+        <!-- 进行局部刷新的容器 id="app" -->
+        <div id="app"> 
+            {% block content %}{% endblock %}
+        </div>
+        
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.js"></script>
+        <script>
+            $(document).pjax('a', '#app'); //代理a标签(a标签来自banner组件页面)
+        </script>
+        {% block scripts %}{% endblock %}
+    </body>
+</html>

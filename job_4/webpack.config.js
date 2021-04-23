@@ -55,13 +55,26 @@ const baseConfig = {
             },
             {
                 test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader']
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1
+                        }
+                    },
+                    'postcss-loader'
+                ]
             },
         ]
     },
     plugins: [
         ...htmlPlugins,
-        new MiniCssExtractPlugin(),
+        new MiniCssExtractPlugin({
+            // 指定打包后的路径
+            filename: 'styles/[name].css',
+            chunkFilename: 'styles/[name].css'
+        }),
         new AfterHtmlPlugin(),
     ],
     resolve: {
