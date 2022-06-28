@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手动实现拖拽-原生写法</title>
+</head>
+<style>
+    .move {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        background: gray
+    }
+</style>
+
+<body>
+    <div class="move-container">
+        <div class="move">
+        </div>
+    </div>
+    <script>
+        let elem = document.querySelector('.move');
+        let dragging; //拖拽状态
+        let trans, portrait; //鼠标按下时相对于选中元素的位移
+
+        document.addEventListener('mousedown', function (e) {
+            if (e.target == elem) {
+                dragging = true; //激活拖拽状态
+                let elemRect = elem.getBoundingClientRect(); //返回元素的大小及其相对于视口的位置
+                trans = e.clientX - elemRect.left; //鼠标按下时和选中元素的坐标偏移:x坐标
+                portrait = e.clientY - elemRect.top; //鼠标按下时和选中元素的坐标偏移:y坐标
+
+                console.log('x:', e.clientX, 'y', e.clientY);
+                console.log('left:', elemRect.left, 'top:', elemRect.top);
+                console.log('mousedown x:', trans, 'y:', portrait);
+            }
+        });
+        document.addEventListener('mouseup', function (e) {
+            dragging = false;
+        });
+        document.addEventListener('mousemove', function (e) {
+            if (dragging) {
+                var moveX = e.clientX - trans,
+                    moveY = e.clientY - portrait;
+
+                elem.style.left = moveX + 'px';
+                elem.style.top = moveY + 'px';
+
+            }
+        });
+    </script>
+</body>
+
+</html>
