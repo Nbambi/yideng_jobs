@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    if (!!window.SharedWorker) {
+        let worker = new SharedWorker('shared_worker.js');
+        // 设置 onmessage 事件
+        worker.port.onmessage = (event) => {
+            const { result } = event.data;
+            console.log(result);
+        }
+        // 设置 onerror 事件
+        worker.port.onerror = (error) => {
+            console.log(error.filename, error.lineno, error.message);
+        }
+
+        function clickfn() {
+            // 使用 port 发送消息
+            worker.port.postMessage({ x: 2, y: 3 });
+
+        }
+
+    } else {
+        alert('Not Support!');
+    }
+</script>
+
+<body>
+    <button onclick="clickfn()">click</button>
+</body>
+
+</html>

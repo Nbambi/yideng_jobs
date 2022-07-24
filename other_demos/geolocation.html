@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head> 
+    <meta charset="utf-8"> 
+    <title>菜鸟教程(runoob.com)</title> 
+</head>
+
+<body>
+    <button onclick="getLocation()">点我</button>
+
+    <script>
+        function getLocation() {
+            // 判断浏览器是否支持
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    console.log("纬度：" + position.coords.latitude + "，经度：" + position.coords.longitude);
+                });
+            } else {
+                console.log("该浏览器不支持获取地理位置");
+            }
+        }
+    </script>
+</body>
+
+</html>
